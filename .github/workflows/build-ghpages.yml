@@ -25,7 +25,7 @@ jobs:
           mkdir -p src/environments
           cat > src/environments/environment.ts <<EOL
           export const environment = {
-            mapboxKey: '${{ secrets.MAPBOX_KEY }}'
+            mapboxKey: '${{ secrets.MAPBOX_TOKEN }}'
           };
           EOL
 
