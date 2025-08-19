@@ -34,7 +34,9 @@ jobs:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
 
       - name: Copiar index.html a 404.html
-        run: cp ./${{ env.DIR }}/dist/${{ env.DIR }}/browser/index.html ./${{ env.DIR }}/dist/${{ env.DIR }}/browser/404.html
+        run: cp ./$DIR/dist/$DIR/browser/index.html ./$DIR/dist/$DIR/browser/404.html
+        env:
+          DIR: ${{ env.DIR }}
       
       - name: Deploy a GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
