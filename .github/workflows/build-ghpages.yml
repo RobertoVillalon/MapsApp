@@ -34,7 +34,7 @@ jobs:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
 
       - name: Copiar index.html a 404.html
-        run: cp ./$DIR/dist/$DIR/browser/index.html ./$DIR/dist/$DIR/browser/404.html
+        run: cp ./dist/08-maps-app/browser/index.html ./dist/08-maps-app/browser/404.html        
         env:
           DIR: ${{ env.DIR }}
       
