@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -14,16 +15,12 @@ jobs:
         with:
           node-version: 20
 
+      # 1️⃣ Instalar dependencias
       - name: Instalar dependencias
-        working-directory: ${{ env.DIR }}
         run: npm ci
 
-      - name: Listar env dir
-        run: |
-          cat '${{ env.DIR }}'
-
+      # 2️⃣ Crear environment.ts
       - name: Crear environment.ts para Angular
-        working-directory: ${{ env.DIR }}
         run: |
           mkdir -p src/environments
           cat > src/environments/environment.ts <<EOL
@@ -31,18 +28,18 @@ jobs:
             mapboxKey: '${{ secrets.MAPBOX_KEY }}'
           };
           EOL
-      # 7️⃣ Build Angular con base-href
+
+      # 3️⃣ Build Angular (ajusta el base-href según tu repo)
       - name: Build Angular
-        working-directory: ${{ env.DIR }}
-        run: npm run build -- --configuration production --base-href "/08-maps-app/"
+        run: npm run build -- --configuration production --base-href "/MapsApp/"
         env:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
 
+      # 4️⃣ Copiar index.html a 404.html
       - name: Copiar index.html a 404.html
         run: cp ./dist/08-maps-app/browser/index.html ./dist/08-maps-app/browser/404.html        
-        env:
-          DIR: ${{ env.DIR }}
-      
+
+      # 5️⃣ Deploy a GitHub Pages
       - name: Deploy a GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
