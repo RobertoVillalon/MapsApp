@@ -30,7 +30,7 @@ jobs:
       # 7️⃣ Build Angular con base-href
       - name: Build Angular
         working-directory: ${{ env.DIR }}
-        run: npm run build -- --configuration production --base-href "/"
+        run: npm run build -- --configuration production --base-href "/08-maps-app/"
         env:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
 
