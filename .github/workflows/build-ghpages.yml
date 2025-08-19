@@ -18,6 +18,10 @@ jobs:
         working-directory: ${{ env.DIR }}
         run: npm ci
 
+      - name: Listar env dir
+        run: |
+          cat '${{ env.DIR }}'
+
       - name: Crear environment.ts para Angular
         working-directory: ${{ env.DIR }}
         run: |
