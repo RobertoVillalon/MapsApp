@@ -2,60 +2,21 @@ name: Deploy Angular to GitHub Pages
 
 on:
   workflow_dispatch:
-    inputs:
-      project:
-        description: "Selecciona el proyecto a construir"
-        required: true
-        default: "03-gifs-app"
-        type: choice
-        options:
-          - 03-gifs-app
-          - 04-country-app
-          - 08-maps-app
-  push:
-    paths:
-      - '03-gifs-app/**'
-      - '04-country-app/**'
-      - '08-maps-app/**'
-    branches: [ main ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout
       - uses: actions/checkout@v4
 
-      # 2️⃣ Definir directorio según input o cambios
-      - name: Definir directorio según input o cambios
-        id: set-path
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "DIR=${{ github.event.inputs.project }}" >> $GITHUB_ENV
-          else
-            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^03-gifs-app/'; then
-              echo "DIR=03-gifs-app" >> $GITHUB_ENV
-            elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^04-country-app/'; then
-              echo "DIR=04-country-app" >> $GITHUB_ENV
-            elif git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^08-maps-app/'; then
-              echo "DIR=08-maps-app" >> $GITHUB_ENV
-            else
-              echo "No se detectaron cambios relevantes"
-              exit 1
-            fi
-          fi
-
-      # 4️⃣ Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 5️⃣ Instalar dependencias
       - name: Instalar dependencias
         working-directory: ${{ env.DIR }}
         run: npm ci
 
-      # 6️⃣ Crear environment.ts
       - name: Crear environment.ts para Angular
         working-directory: ${{ env.DIR }}
         run: |
@@ -68,7 +29,7 @@ jobs:
       # 7️⃣ Build Angular con base-href
       - name: Build Angular
         working-directory: ${{ env.DIR }}
-        run: npm run build -- --configuration production --base-href "/cursoAngular/"
+        run: npm run build -- --configuration production --base-href "/"
         env:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
 
